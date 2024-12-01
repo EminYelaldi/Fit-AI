@@ -5,9 +5,11 @@ export default StyleSheet.create({
     backgroundColor: '#0f0f0f', // SafeAreaView'in beyaz kalmasını önlemek için siyah
   },
   backLink: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
+    position: 'absolute', // Sabit konum
+    top: 10, 
+    left: 10, 
+    zIndex: 10, 
+    padding: 8, 
   },
   backLinkText: {
     fontSize: 16,

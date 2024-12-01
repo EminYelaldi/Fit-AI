@@ -22,8 +22,7 @@ const FormScreen = () => {
 
     Alert.alert(
       'Bilgileriniz',
-      `Yaş: ${age}, Boy: ${height}, Kilo: ${weight}, Spor Yeri: ${
-        location === 'gym' ? 'Spor Salonu' : 'Ev'
+      `Yaş: ${age}, Boy: ${height}, Kilo: ${weight}, Spor Yeri: ${location === 'gym' ? 'Spor Salonu' : 'Ev'
       }, Haftada: ${daysPerWeek} Gün`
     );
   };
@@ -40,6 +39,7 @@ const FormScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Form</Text>
       <TextInput
+        placeholderTextColor="#ccc"
         style={styles.input}
         placeholder="Yaş"
         value={age}
@@ -47,6 +47,7 @@ const FormScreen = () => {
         keyboardType="numeric"
       />
       <TextInput
+        placeholderTextColor="#ccc"
         style={styles.input}
         placeholder="Boy (cm)"
         value={height}
@@ -54,6 +55,7 @@ const FormScreen = () => {
         keyboardType="numeric"
       />
       <TextInput
+        placeholderTextColor="#ccc"
         style={styles.input}
         placeholder="Kilo (kg)"
         value={weight}
@@ -83,9 +85,9 @@ const FormScreen = () => {
           step={1}
           value={daysPerWeek}
           onValueChange={(value) => setDaysPerWeek(value)}
-          minimumTrackTintColor="#007BFF"
-          maximumTrackTintColor="#ccc"
-          thumbTintColor="#007BFF"
+          minimumTrackTintColor='#dfff00'
+          maximumTrackTintColor='#dfff00'
+          thumbTintColor='#dfff00'
         />
       </View>
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>

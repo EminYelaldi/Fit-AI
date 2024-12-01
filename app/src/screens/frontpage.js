@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
 import { useRouter } from 'expo-router';
+import styles from './frontpage.style';
 
 const FrontPage = () => {
   const router = useRouter();
@@ -36,66 +37,5 @@ const FrontPage = () => {
     </ImageBackground>
   );
 };
-
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor:'#000'
-  },
-  overlay: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)', // Siyah transparan katman
-    width: '100%',
-    paddingHorizontal: 20,
-  },
-  title: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    color: '#dfff00',
-    textAlign: 'center',
-    marginTop:20,
-    fontFamily: 'BebasNeue', // Daha önce yüklenen font
-  },
-  getStartedButton: {
-    width: '40%',
-    height: 50,
-    backgroundColor: '#dfff00', // Fosforlu sarı
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 20,
-  },
-  buttonContainer: {
-    width: '100%',
-    alignItems: 'center',
-    marginBottom: 40,
-    flexDirection:'row',
-    justifyContent:'space-between',
-  },
-  loginButton: {
-    width: '40%',
-    height: 50,
-    borderWidth: 2,
-    borderColor: '#dfff00', // Fosforlu sarı kenarlık
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 20,
-  },
-  getStartedText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000', // Siyah yazı
-    
-  },
-  loginText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#ffff', // Siyah yazı
-    
-  },
-});
 
 export default FrontPage;

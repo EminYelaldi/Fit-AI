@@ -13,12 +13,12 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16, // Yandan biraz boşluk bırakır
-    backgroundColor: '#1b232c', // Düz arka plan rengi
+    backgroundColor: '#0f0f0f', // Düz arka plan rengi
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: '#dfff00',
     marginBottom: 40,
   },
   inputContainer: {
@@ -28,17 +28,17 @@ export default StyleSheet.create({
     width: '100%',
     height: 50,
     borderWidth: 1,
-    borderColor: '#1a75ff',
+    borderColor: '#FFFF',
     borderRadius: 8,
     paddingHorizontal: 16,
     marginBottom: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: '#222',
     color: '#fff',
   },
   resetButton: {
     width: '100%',
     height: 50,
-    backgroundColor: '#ff3333',
+    backgroundColor: '#dfff00',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
@@ -47,11 +47,11 @@ export default StyleSheet.create({
   resetButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#000',
   },
   goBackText: {
     fontSize: 16,
-    color: '#ffd700',
+    color: '#dfff00',
     textDecorationLine: 'underline',
   },
 });
