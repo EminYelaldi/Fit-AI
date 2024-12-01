@@ -15,7 +15,7 @@ const FrontPage = () => {
 
   return (
     <ImageBackground
-      source={require('../assets/photos/woman.png')} // Arka plan resmi
+      source={require('../assets/photos/man.png')} // Arka plan resmi
       style={styles.background}
       resizeMode="cover"
       padding= '40'
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:'#0f0f0f'
+    backgroundColor:'#000'
   },
   overlay: {
     flex: 1,
