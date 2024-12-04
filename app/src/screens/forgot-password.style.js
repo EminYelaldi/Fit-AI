@@ -3,7 +3,7 @@ export default StyleSheet.create({
 
   safeArea: {
     flex: 1,
-    backgroundColor: '#1b232c', // SafeAreaView'in beyaz kalmasını önlemek için
+    backgroundColor: '#192126', // SafeAreaView'in beyaz kalmasını önlemek için
   },
   scrollContainer: {
     flexGrow: 1,
@@ -13,7 +13,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16, // Yandan biraz boşluk bırakır
-    backgroundColor: '#0f0f0f', // Düz arka plan rengi
+    backgroundColor: '#192126', // Düz arka plan rengi
   },
   title: {
     fontSize: 32,
@@ -28,17 +28,17 @@ export default StyleSheet.create({
     width: '100%',
     height: 50,
     borderWidth: 1,
-    borderColor: '#FFFF',
+    borderColor: '#384046',
     borderRadius: 8,
     paddingHorizontal: 16,
     marginBottom: 16,
-    backgroundColor: '#222',
+    backgroundColor: '#384046',
     color: '#fff',
   },
   resetButton: {
     width: '100%',
     height: 50,
-    backgroundColor: '#dfff00',
+    backgroundColor: '#BBF246',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
@@ -51,7 +51,7 @@ export default StyleSheet.create({
   },
   goBackText: {
     fontSize: 16,
-    color: '#dfff00',
+    color: '#BBF246',
     textDecorationLine: 'underline',
   },
 });

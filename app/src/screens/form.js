@@ -86,7 +86,7 @@ const FormScreen = () => {
           value={daysPerWeek}
           onValueChange={(value) => setDaysPerWeek(value)}
           minimumTrackTintColor='#dfff00'
-          maximumTrackTintColor='#dfff00'
+          maximumTrackTintColor='#ccc'
           thumbTintColor='#dfff00'
         />
       </View>

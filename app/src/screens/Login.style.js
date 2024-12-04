@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#0f0f0f', // SafeAreaView'in beyaz kalmasını önlemek için siyah
+    backgroundColor: '#192126', // SafeAreaView'in beyaz kalmasını önlemek için siyah
   },
   backLink: {
     position: 'absolute', // Sabit konum
@@ -13,7 +13,7 @@ export default StyleSheet.create({
   },
   backLinkText: {
     fontSize: 16,
-    color: '#dfff00', // Fosforlu sarı renk
+    color: '#BBF246', // Fosforlu sarı renk
     textDecorationLine: 'underline',
   },
   scrollContainer: {
@@ -24,7 +24,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16, // Yandan biraz boşluk bırakır
-    backgroundColor: '#0f0f0f', // Siyah arka plan
+    backgroundColor: '#192126', // Siyah arka plan
     paddingBottom:70,
   },
   logo: {
@@ -35,7 +35,7 @@ export default StyleSheet.create({
   title: {
     fontSize: 50,
     fontWeight: 'bold',
-    color: '#dfff00', // Fosforlu sarı
+    color: '#BBF246', // Fosforlu sarı
     marginBottom: 40,
   },
   inputContainer: {
@@ -45,17 +45,17 @@ export default StyleSheet.create({
     width: '100%',
     height: 50,
     borderWidth: 0.5,
-    borderColor: '#FFFF', // Fosforlu sarı kenarlık
+    borderColor: '#384046', // Fosforlu sarı kenarlık
     borderRadius: 8,
     paddingHorizontal: 16,
     marginBottom: 16,
-    backgroundColor: '#222', // Koyu gri arka plan
-    color: '#dfff00', // Fosforlu sarı metin
+    backgroundColor: '#384046', // Koyu gri arka plan
+    color: '#BBF246', // Fosforlu sarı metin
   },
   loginButton: {
     width: '100%',
     height: 50,
-    backgroundColor: '#dfff00', // Fosforlu sarı
+    backgroundColor: '#BBF246', // Fosforlu sarı
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,

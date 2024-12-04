@@ -19,7 +19,7 @@ export default StyleSheet.create({
     title: {
       fontSize: 40,
       fontWeight: 'bold',
-      color: '#dfff00',
+      color: '#BBF246',
       textAlign: 'center',
       marginTop:20,
       fontFamily: 'BebasNeue', // Daha önce yüklenen font
@@ -27,7 +27,7 @@ export default StyleSheet.create({
     getStartedButton: {
       width: '40%',
       height: 50,
-      backgroundColor: '#dfff00', // Fosforlu sarı
+      backgroundColor: '#BBF246', // Fosforlu sarı
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 20,
@@ -43,7 +43,7 @@ export default StyleSheet.create({
       width: '40%',
       height: 50,
       borderWidth: 2,
-      borderColor: '#dfff00', // Fosforlu sarı kenarlık
+      borderColor: '#BBF246', // Fosforlu sarı kenarlık
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 20,

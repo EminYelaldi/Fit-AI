@@ -58,8 +58,6 @@ const LoginScreen = () => {
               style={styles.logo}
               resizeMode="contain"
             />
-
-            {/* Başlık */}
             
             {/* Başlık */}
             <Text style={[styles.title, { fontFamily: 'BebasNeue' }]}>GYM LOGIN</Text>
