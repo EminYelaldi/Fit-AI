@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
 import FrontPage from './src/screens/frontpage';
+import FormScreen from './src/screens/form';
+import { Buffer } from 'buffer';
+
+global.Buffer = Buffer;
 
 const App = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false); // Font yükleme durumunu kontrol eden state
