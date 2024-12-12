@@ -18,7 +18,7 @@ export default StyleSheet.create({
   title: {
     fontSize: '40',
     color: '#BBF246',
-    marginVertical: 20,
+    marginBottom: 20,
     textAlign: 'center',
   },
   loaderContainer: {
