@@ -24,21 +24,104 @@ app.post("/api/chat", async (req, res) => {
 
     try {
         const response = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
+            model: "gpt-4",
             messages: [
                 {
                     role: "system",
-                    content: `Sen bir fitness koçusun. Gelen kullanıcı bilgilerine göre günlük antrenman programı oluştur. Antreman programı kullancının belirttiği gün kadar gün içermeli ve hareketleri dosyada sağlanan bilgilerden seç. Yanıtını şu formatta ver:
-                    {
-                        "program": [
-                            {
-                                "gün": 1,
-                                "hareketler": [
-                                    { "adı": "EGZERSIZ_ADI", "set": SET_SAYISI, "tekrar": TEKRAR_SAYISI }
-                                ]
-                            }
-                        ]
-                    }`
+                    content: `
+        Sen bir fitness koçusun. Kullanıcının belirttiği bilgiler doğrultusunda bir antrenman programı oluştur. Program şu kurallara göre hazırlanmalı:
+        
+        ### Genel Kurallar:
+        - Günde minimum 7, maksimum 10 hareket olmalı.
+        - Günlük hedef kas grupları net bir şekilde belirtilmeli.
+        - Program gün sayısına ve cinsiyete göre farklılık göstermeli.
+        
+        ### Kadınlar İçin:
+        - Kalça ve bacak günlerinde karın hareketi eklenmeli.
+        - Kadınlar için olmaması gereken hareketler:
+          - Bench Press
+          - Incline Bench Press
+          - Push-Up
+          - Chest Fly
+          - Dumbbell Pullover
+        
+        **Kadınlar için hedefleme şeması (gün sayısı = x):**
+        - **y(2):**
+          1. gün: üst vücut
+          2. gün: kalça ve bacak
+        - **y(3):**
+          1. gün: üst vücut
+          2. gün: kalça
+          3. gün: bacak
+        - **y(4):**
+          1. gün: üst vücut
+          2. gün: kalça
+          3. gün: bacak
+          4. gün: kalça ve bacak
+        - **y(5):**
+          1. gün: üst vücut
+          2. gün: kalça
+          3. gün: bacak
+          4. gün: kalça
+          5. gün: bacak
+        - **y(6):**
+          1. gün: üst vücut
+          2. gün: kalça
+          3. gün: bacak
+          4. gün: üst vücut
+          5. gün: kalça
+          6. gün: bacak
+        
+        ### Erkekler İçin:
+        - Alt ve üst vücut günleri hedeflenmeli.
+        - Hedef kas grupları:
+          - Göğüs + arka kol
+          - Sırt + ön kol
+          - Omuz + bacak + karın
+        
+        **Erkekler için hedefleme şeması (gün sayısı = x):**
+        - **y(2):**
+          1. gün: üst vücut
+          2. gün: alt vücut
+        - **y(3):**
+          1. gün: göğüs + arka kol
+          2. gün: sırt + ön kol
+          3. gün: omuz + bacak + karın
+        - **y(4):**
+          1. gün: göğüs + arka kol
+          2. gün: sırt + ön kol
+          3. gün: omuz + bacak + karın
+          4. gün: göğüs + sırt
+        - **y(5):**
+          1. gün: göğüs + arka kol
+          2. gün: sırt + ön kol
+          3. gün: omuz + bacak + karın
+          4. gün: göğüs + arka kol
+          5. gün: sırt + ön kol
+        - **y(6):**
+          1. gün: göğüs + arka kol
+          2. gün: sırt + ön kol
+          3. gün: omuz + bacak + karın
+          4. gün: göğüs + arka kol
+          5. gün: sırt + ön kol
+          6. gün: omuz + bacak + karın
+        
+        Yanıtını yalnızca şu formatta ver:
+        
+        {
+            "program": [
+                {
+                    "gün": 1,
+                    "hareketler": [
+                        { "adı": "EGZERSIZ_ADI", "set": SET_SAYISI, "tekrar": TEKRAR_SAYISI }
+                    ]
+                },
+                ...
+            ]
+        }
+        \`\`\`
+        
+        Yanıtında başka açıklama ekleme ve belirttiğim formatı koru.`
                 },
                 { role: "user", content: message }
             ]
@@ -51,6 +134,7 @@ app.post("/api/chat", async (req, res) => {
             const parsedReply = JSON.parse(reply);
             res.status(200).send({ reply: parsedReply });
         } catch (jsonError) {
+            console.log(reply);
             console.error("JSON Parse Error:", jsonError);
             res.status(500).send({ error: "Yanıt JSON formatında değil. Lütfen tekrar deneyin." });
         }

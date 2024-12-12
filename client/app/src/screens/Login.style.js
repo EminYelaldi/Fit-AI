@@ -2,14 +2,7 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#192126', // SafeAreaView'in beyaz kalmasını önlemek için siyah
-  },
-  backLink: {
-    position: 'absolute', // Sabit konum
-    top: 10, 
-    left: 10, 
-    zIndex: 10, 
-    padding: 8, 
+    backgroundColor: '#121212', // SafeAreaView'in beyaz kalmasını önlemek için siyah
   },
   backLinkText: {
     fontSize: 16,
@@ -23,14 +16,15 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 16, // Yandan biraz boşluk bırakır
-    backgroundColor: '#192126', // Siyah arka plan
+    paddingHorizontal: 23, // Yandan biraz boşluk bırakır
+    backgroundColor: '#121212', // Siyah arka plan
     paddingBottom:70,
+
   },
   logo: {
-    width: 180,
-    height: 180,
-    marginBottom: 5,
+    width: 90,
+    height: 90,
+    marginBottom: 40,
   },
   title: {
     fontSize: 50,
@@ -39,59 +33,77 @@ export default StyleSheet.create({
     marginBottom: 40,
   },
   inputContainer: {
-    width: '100%',
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    backgroundColor: "#222",
+    borderWidth: 1,
+    borderColor: "#BBF246",
+    borderRadius: 8,
+    marginBottom: 16,
+    paddingHorizontal: 10,
+  },
+  inputIcon: {
+    marginRight: 10,
   },
   input: {
-    width: '100%',
+    flex: 1,
     height: 50,
-    borderWidth: 0.5,
-    borderColor: '#384046', // Fosforlu sarı kenarlık
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    marginBottom: 16,
-    backgroundColor: '#384046', // Koyu gri arka plan
-    color: '#BBF246', // Fosforlu sarı metin
+    color: "#BBF246",
+    backgroundColor:"#222",
   },
-  loginButton: {
-    width: '100%',
+  neonButton: {
+    width: "100%",
     height: 50,
-    backgroundColor: '#BBF246', // Fosforlu sarı
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#BBF246",
     borderRadius: 8,
     marginBottom: 16,
-    marginTop:10,
+    marginTop: 10,
   },
-  loginButtonText: {
+  neonButtonText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000', // Siyah yazı
+    fontWeight: "bold",
+    color: "#000", // Siyah yazı
   },
   forgotPasswordText: {
     fontSize: 16,
     color: '#FFFF', // Fosforlu sarı
     textDecorationLine: 'underline',
-    marginBottom: 8,
+    marginBottom: 10,
     marginLeft:'220',
   },
-  signUpText: {
-    fontSize: 16,
-    color: '#FFFF', // Fosforlu sarı
-    textDecorationLine: 'underline',
-    marginLeft:120,
-  },
   linkContainer: {
-    flexDirection: 'row', // Yatay hizalama
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    marginTop: 8,
+    alignItems: 'right',
+    marginVertical: 3,
     width:'100%',
-    
   },
   linkText: {
     fontSize: 16,
-    color: '#FFFF', // Fosforlu sarı
-    textDecorationLine: 'underline',
+    color: '#ccc', // Fosforlu sarı
+    textAlign:"right",
   },
-  
+  backLink: {
+    position: "absolute", // Geri butonu pozisyonu
+    top: 15,
+    left: 15,
+    zIndex: 10,
+  },
+  goBackText: {
+    fontSize: 16,
+    color: '#BBF246',
+    marginTop:30,
+
+  },
+  backContainer:{
+    justifyContent:'space-between',
+    flexDirection: "row",
+  },
+  accountText:{
+    fontSize: 16,
+    color:'#ccc',
+    marginRight:4,
+    marginTop:30,
+  },
 });

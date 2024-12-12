@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image,KeyboardAvoidingView,Platform,ScrollView ,Alert} from 'react-native';
+import { View, TouchableOpacity, Image, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { TextInput, Button, IconButton, Avatar, Text } from "react-native-paper";
 import * as Font from 'expo-font';
 import { useRouter } from 'expo-router';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"; // İkon kütüphanesi
 import styles from './Login.style';
 
 
@@ -40,8 +42,9 @@ const LoginScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <TouchableOpacity style={styles.backLink} onPress={handleGoBack}>
-        <Text style={styles.backLinkText}>← Back</Text>
+        <MaterialCommunityIcons name="arrow-left" size={24} color="#BBF246" />
       </TouchableOpacity>
+
 
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -58,15 +61,18 @@ const LoginScreen = () => {
               style={styles.logo}
               resizeMode="contain"
             />
-            
+
             {/* Başlık */}
             <Text style={[styles.title, { fontFamily: 'BebasNeue' }]}>GYM LOGIN</Text>
 
 
             {/* Giriş Alanları */}
+
             <View style={styles.inputContainer}>
+              <MaterialCommunityIcons name="email" size={24} color="#BBF246" style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
+                textColor='#BBF246'
                 placeholder="Email"
                 placeholderTextColor="#ccc"
                 value={email}
@@ -74,30 +80,41 @@ const LoginScreen = () => {
                 keyboardType="email-address"
                 autoCapitalize="none"
               />
+            </View>
+
+            {/* Şifre Alanı */}
+            <View style={styles.inputContainer}>
+              <MaterialCommunityIcons name="lock" size={24} color="#BBF246" style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
                 placeholder="Password"
+                textColor='#BBF246'
                 placeholderTextColor="#ccc"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
               />
             </View>
-
-            {/* Login Butonu */}
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-              <Text style={[styles.loginButtonText, ]}>LOGIN</Text>
-            </TouchableOpacity>
-
-            {/* Forgot Password ve Sign Up Sağ ve Sol Uçta */}
             <View style={styles.linkContainer}>
-              <TouchableOpacity onPress={handleSignUp}>
-                <Text style={[styles.linkText]}>Sign Up</Text>
-              </TouchableOpacity>
               <TouchableOpacity onPress={handleForgotPassword}>
                 <Text style={[styles.linkText]}>Forgot Password?</Text>
               </TouchableOpacity>
             </View>
+            {/* Login Butonu */}
+            <Button
+              mode="contained"
+              onPress={handleLogin}
+              style={styles.neonButton}
+              labelStyle={styles.neonButtonText}
+            >
+              LOGIN
+            </Button>
+
+            <TouchableOpacity onPress={handleSignUp} style={styles.backContainer}>
+              <Text style={styles.accountText}>Don't have an account?</Text>
+              <Text style={styles.goBackText}>SignUp</Text>
+            </TouchableOpacity>
+
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

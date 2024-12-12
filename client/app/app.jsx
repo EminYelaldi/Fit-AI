@@ -3,6 +3,7 @@ import { SafeAreaView, StyleSheet, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
 import FrontPage from './src/screens/frontpage';
 import FormScreen from './src/screens/form';
+import ProgramScreen from './src/screens/program';
 import { Buffer } from 'buffer';
 
 global.Buffer = Buffer;
@@ -29,7 +30,7 @@ const App = () => {
       </SafeAreaView>
     );
   }
-
+  
   return (
     <SafeAreaView style={styles.container}>
       <FrontPage />

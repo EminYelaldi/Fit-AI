@@ -1,9 +1,17 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"; // İkon kütüphanesi
+import { Divider } from "react-native-paper";
+import styles from './program.style';
 
 const ProgramScreen = () => {
   const params = useLocalSearchParams() || {};
+  const router = useRouter();
+  const handleGoBack = () => {
+    router.push('/src/screens/form'); // Ana sayfaya (Front Page) yönlendirme
+  };
 
   // Program verisini al ve JSON olarak çöz
   let programData = null;
@@ -29,64 +37,34 @@ const ProgramScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Oluşturulan Program</Text>
-      <FlatList
-        data={programData}
-        keyExtractor={(item) => `day-${item.gün}`}
-        renderItem={({ item }) => (
-          <View style={styles.dayContainer}>
-            <Text style={styles.dayTitle}>Gün {item.gün}</Text>
-            {item.hareketler.map((hareket, index) => (
-              <View key={`hareket-${index}`} style={styles.exerciseContainer}>
-                <Text style={styles.exerciseText}>
-                  {hareket.adı} - {hareket.set} Set x {hareket.tekrar} Tekrar
-                </Text>
-              </View>
-            ))}
-          </View>
-        )}
-        contentContainerStyle={styles.listContainer}
-      />
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+      <TouchableOpacity style={styles.backLink} onPress={handleGoBack}>
+        <MaterialCommunityIcons name="arrow-left" size={24} color="#BBF246" />
+      </TouchableOpacity>
+      <View style={styles.container}>
+        <Text style={[styles.title, { fontFamily: 'BebasNeue' }]}>Workout Program</Text>
+        <FlatList
+          data={programData}
+          keyExtractor={(item) => `day-${item.gün}`}
+          renderItem={({ item }) => (
+            <View style={styles.dayContainer}>
+              <Text style={styles.dayTitle}>Day {item.gün}</Text>
+              {item.hareketler.map((hareket, index) => (
+                <View key={`hareket-${index}`} style={styles.exerciseContainer}>
+
+                  <Text style={styles.exerciseText}>
+                    {hareket.adı} - {hareket.set} Set x {hareket.tekrar} Reps
+                  </Text>
+                  <Divider style={styles.divider} />
+                </View>
+              ))}
+            </View>
+          )}
+          contentContainerStyle={styles.listContainer}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  infoText: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-  },
-  dayContainer: {
-    marginBottom: 20,
-    padding: 10,
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  dayTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  exerciseContainer: {
-    marginBottom: 5,
-  },
-  exerciseText: {
-    fontSize: 16,
-  },
-});
+
 export default ProgramScreen;

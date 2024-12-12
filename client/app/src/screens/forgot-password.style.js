@@ -3,37 +3,50 @@ export default StyleSheet.create({
 
   safeArea: {
     flex: 1,
-    backgroundColor: '#192126', // SafeAreaView'in beyaz kalmasını önlemek için
+    backgroundColor: '#121212', // SafeAreaView'in beyaz kalmasını önlemek için
   },
   scrollContainer: {
     flexGrow: 1,
+  },
+  backLink: {
+    position: "absolute", // Geri butonu pozisyonu
+    top: 15,
+    left: 15,
+    zIndex: 10,
   },
   background: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16, // Yandan biraz boşluk bırakır
-    backgroundColor: '#192126', // Düz arka plan rengi
+    backgroundColor: '#121212', // Düz arka plan rengi
   },
   title: {
-    fontSize: 32,
+    fontSize: 45,
     fontWeight: 'bold',
-    color: '#dfff00',
-    marginBottom: 40,
+    color: '#BBF246',
+    marginBottom: 50,
   },
   inputContainer: {
-    width: '100%',
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    backgroundColor: "#222",
+    borderWidth: 1,
+    borderColor: "#BBF246",
+    borderRadius: 8,
+    marginBottom: 30,
+    marginTop:20,
+    paddingHorizontal: 10,
+  },
+  inputIcon: {
+    marginRight: 10,
   },
   input: {
-    width: '100%',
+    flex: 1,
     height: 50,
-    borderWidth: 1,
-    borderColor: '#384046',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    marginBottom: 16,
-    backgroundColor: '#384046',
-    color: '#fff',
+    color: "#BBF246",
+    backgroundColor:"#222",
   },
   resetButton: {
     width: '100%',

@@ -3,37 +3,54 @@ export default StyleSheet.create({
 
   safeArea: {
     flex: 1,
-    backgroundColor: '#192126', // SafeAreaView'in beyaz kalmasını önlemek için
+    backgroundColor: '#121212', // SafeAreaView'in beyaz kalmasını önlemek için
   },
   scrollContainer: {
     flexGrow: 1,
+  },
+  backLink: {
+    position: "absolute",
+    top: 15,
+    left: 15,
+    zIndex: 10,
+  },
+  backLinkText: {
+    fontSize: 16,
+    color: '#BBF246', // Fosforlu sarı renk
+    textDecorationLine: 'underline',
   },
   background: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16, // Yandan biraz boşluk bırakır
-    backgroundColor: '#192126', // Düz arka plan rengi
+    backgroundColor: '#121212', // Düz arka plan rengi
   },
   title: {
-    fontSize: 32,
+    fontSize: 50,
     fontWeight: 'bold',
     color: '#BBF246',
-    marginBottom: 40,
+    marginBottom: 60,
   },
   inputContainer: {
-    width: '100%',
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    backgroundColor: "#222",
+    borderWidth: 1,
+    borderColor: "#BBF246",
+    borderRadius: 8,
+    marginBottom: 16,
+    paddingHorizontal: 10,
+  },
+  inputIcon: {
+    marginRight: 10,
   },
   input: {
-    width: '100%',
+    flex: 1,
     height: 50,
-    borderWidth: 1,
-    borderColor: '#384046',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    marginBottom: 16,
-    backgroundColor: '#384046',
-    color: '#BBF246',
+    color: "#BBF246",
+    backgroundColor:"#222",
   },
   signUpButton: {
     width: '100%',
@@ -43,6 +60,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
     marginBottom: 16,
+    marginTop: 10,
   },
   signUpButtonText: {
     fontSize: 18,
@@ -52,8 +70,18 @@ export default StyleSheet.create({
   goBackText: {
     fontSize: 16,
     color: '#BBF246',
-    textDecorationLine: 'underline',
+    marginTop:30,
+
   },
-      
+  backContainer:{
+    justifyContent:'space-between',
+    flexDirection: "row",
+  },
+  accountText:{
+    fontSize: 16,
+    color:'#ccc',
+    marginRight:4,
+    marginTop:30,
+  },
 
 })

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity,KeyboardAvoidingView,ScrollView,Platform, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context'; 
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"; // İkon kütüphanesi
 import styles from './sign-up.style';
 
 const SignUpScreen = () => {
@@ -33,6 +34,9 @@ const SignUpScreen = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <TouchableOpacity style={styles.backLink} onPress={handleGoBack}>
+              <MaterialCommunityIcons name="arrow-left" size={24} color="#BBF246" />
+            </TouchableOpacity>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -43,45 +47,58 @@ const SignUpScreen = () => {
         >
           <View style={styles.background}>
             {/* Başlık */}
-            <Text style={styles.title}>Sign Up</Text>
+            <Text style={[styles.title, { fontFamily: 'BebasNeue' }]}>Sign Up</Text>
 
             {/* Kayıt Alanları */}
             <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                placeholderTextColor="#ccc"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor="#ccc"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Confirm Password"
-                placeholderTextColor="#ccc"
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                secureTextEntry
-              />
-            </View>
-
+            <MaterialCommunityIcons name="email" size={24} color="#BBF246" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              textColor='#BBF246'
+              placeholder="Email"
+              placeholderTextColor="#ccc"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+          </View>
+             {/* Şifre Alanı */}
+          <View style={styles.inputContainer}>
+            <MaterialCommunityIcons name="lock" size={24} color="#BBF246" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              textColor='#BBF246'
+              placeholderTextColor="#ccc"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+          </View>
+             {/* Şifre Alanı */}
+          <View style={styles.inputContainer}>
+            <MaterialCommunityIcons name="lock" size={24} color="#BBF246" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              textColor='#BBF246'
+              placeholderTextColor="#ccc"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+          </View>
+      
             {/* Kayıt Ol Butonu */}
             <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
               <Text style={styles.signUpButtonText}>Sign Up</Text>
             </TouchableOpacity>
 
             {/* Geri Dönüş Butonu */}
-            <TouchableOpacity onPress={handleGoBack}>
-              <Text style={styles.goBackText}>Back to Login</Text>
+            <TouchableOpacity onPress={handleGoBack} style={styles.backContainer}>
+              <Text style={styles.accountText}>Already have an account?</Text>
+              <Text style={styles.goBackText}>Login</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

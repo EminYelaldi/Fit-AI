@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity,handleGoBack,SafeAreaView,KeyboardAvoidingView,Platform,ScrollView,Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import styles from './forgot-password.style';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"; // İkon kütüphanesi
+
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -25,6 +27,10 @@ const ForgotPassword = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <TouchableOpacity style={styles.backLink} onPress={handleGoBack}>
+              <MaterialCommunityIcons name="arrow-left" size={24} color="#BBF246" />
+            </TouchableOpacity>
+      
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -35,12 +41,14 @@ const ForgotPassword = () => {
         >
           <View style={styles.background}>
             {/* Başlık */}
-            <Text style={styles.title}>Forgot Password</Text>
+            <Text style={[styles.title, { fontFamily: 'BebasNeue' }]}>Forgot Password</Text>
 
             {/* Email Giriş Alanı */}
             <View style={styles.inputContainer}>
+              <MaterialCommunityIcons name="email" size={24} color="#BBF246" style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
+                textColor='#BBF246'
                 placeholder="Email"
                 placeholderTextColor="#ccc"
                 value={email}
@@ -53,11 +61,6 @@ const ForgotPassword = () => {
             {/* Şifre Sıfırlama Butonu */}
             <TouchableOpacity style={styles.resetButton} onPress={handleResetPassword}>
               <Text style={styles.resetButtonText}>Reset Password</Text>
-            </TouchableOpacity>
-
-            {/* Geri Dönüş Butonu */}
-            <TouchableOpacity onPress={handleGoBack}>
-              <Text style={styles.goBackText}>Back to Login</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
