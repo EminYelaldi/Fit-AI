@@ -6,6 +6,7 @@ import Slider from "@react-native-community/slider";
 import { useRouter } from "expo-router";
 import styles from "./form.style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"; // İkon kütüphanesi
+import Loading from "../components/loading";
 
 
 const FormScreen = () => {
@@ -14,6 +15,7 @@ const FormScreen = () => {
   const [weight, setWeight] = useState("");
   const [daysPerWeek, setDaysPerWeek] = useState(3);
   const [gender, setGender] = useState(""); // Kadın/Erkek seçimi için state
+  const [isLoading, setIsLoading] = useState(false); // Yükleme durumu
   const router = useRouter();
   const handleGoBack = () => {
     router.push('/src/screens/Login'); // Ana sayfaya (Front Page) yönlendirme
@@ -29,6 +31,7 @@ const FormScreen = () => {
     };
 
     try {
+      setIsLoading(true); // Yükleme durumunu başlat
       const response = await fetch("http://localhost:3001/api/chat", {
         method: "POST",
         headers: {
@@ -50,8 +53,13 @@ const FormScreen = () => {
       });
     } catch (error) {
       Alert.alert("Hata", error.message);
+    } finally {
+      setIsLoading(false); // Yükleme durumunu sonlandır
     }
   };
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
 <SafeAreaView style={styles.safeArea}>

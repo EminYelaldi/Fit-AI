@@ -33,7 +33,7 @@ const App = () => {
   
   return (
     <SafeAreaView style={styles.container}>
-      <FrontPage />
+      <FormScreen />
     </SafeAreaView>
   );
 };
