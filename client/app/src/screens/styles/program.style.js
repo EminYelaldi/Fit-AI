@@ -8,10 +8,11 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#121212',
+    marginTop:30,
   },
   backLink: {
     position: "absolute", // Geri butonu pozisyonu
-    top: 15,
+    top: 50,
     left: 15,
     zIndex: 10,
   },
@@ -65,6 +66,19 @@ export default StyleSheet.create({
   divider: {
     marginVertical: 10,
     color: '#BBF246'
-  }
+  },
+  saveButton: {
+    marginTop: 20,
+    backgroundColor: '#BBF246',
+    padding: 10,
+    marginHorizontal:30,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  saveButtonText: {
+    color: '#0c0c14',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 
 })

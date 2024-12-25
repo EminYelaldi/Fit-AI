@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity,KeyboardAvoidingView,ScrollView,Platform, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+  Alert,
+} from 'react-native';
 import { useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context'; 
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"; // İkon kütüphanesi
-import styles from './sign-up.style';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // İkon kütüphanesi
+import styles from './styles/sign-up.style';
 
 const SignUpScreen = () => {
   const [email, setEmail] = useState('');
@@ -11,7 +20,7 @@ const SignUpScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const router = useRouter();
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (!email || !password || !confirmPassword) {
       Alert.alert('Hata', 'Lütfen tüm alanları doldurun!');
       return;
@@ -24,19 +33,37 @@ const SignUpScreen = () => {
       Alert.alert('Hata', 'Şifreler eşleşmiyor!');
       return;
     }
-    Alert.alert('Başarılı', 'Kayıt başarılı!');
-    router.push('/src/screens/login');
-  };
-  const handleGoBack = () => {
-    router.push('/src/screens/Login'); // Giriş ekranına geri dönüş
+
+    try {
+      // Backend'e POST isteği gönder
+      const response = await fetch('http://localhost:6000/add-user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }), // Kullanıcı bilgileri
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Kayıt sırasında bir hata oluştu.');
+      }
+
+      Alert.alert('Başarılı', 'Kayıt başarılı!');
+      router.push('/src/screens/Login');
+    } catch (error) {
+      console.error('Kayıt Hatası:', error);
+      Alert.alert('Hata', error.message || 'Bir hata oluştu.');
+    }
   };
 
+  const handleGoBack = () => {
+    router.push('/src/screens/login'); // Giriş ekranına geri dönüş
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <TouchableOpacity style={styles.backLink} onPress={handleGoBack}>
-              <MaterialCommunityIcons name="arrow-left" size={24} color="#BBF246" />
-            </TouchableOpacity>
+ 
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -51,45 +78,66 @@ const SignUpScreen = () => {
 
             {/* Kayıt Alanları */}
             <View style={styles.inputContainer}>
-            <MaterialCommunityIcons name="email" size={24} color="#BBF246" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              textColor='#BBF246'
-              placeholder="Email"
-              placeholderTextColor="#ccc"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-          </View>
-             {/* Şifre Alanı */}
-          <View style={styles.inputContainer}>
-            <MaterialCommunityIcons name="lock" size={24} color="#BBF246" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              textColor='#BBF246'
-              placeholderTextColor="#ccc"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
-          </View>
-             {/* Şifre Alanı */}
-          <View style={styles.inputContainer}>
-            <MaterialCommunityIcons name="lock" size={24} color="#BBF246" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              placeholder="Confirm Password"
-              textColor='#BBF246'
-              placeholderTextColor="#ccc"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
-          </View>
-      
+              <MaterialCommunityIcons
+                name="email"
+                size={24}
+                color="#BBF246"
+                style={styles.inputIcon}
+              />
+              <TextInput
+                style={styles.input}
+                textColor="#BBF246"
+                placeholder="Email"
+                placeholderTextColor="#ccc"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+            </View>
+
+            {/* Şifre Alanı */}
+            <View style={styles.inputContainer}>
+              <MaterialCommunityIcons
+                name="lock"
+                size={24}
+                color="#BBF246"
+                style={styles.inputIcon}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                textColor="#BBF246"
+                placeholderTextColor="#ccc"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                autoComplete="off" // Otomatik doldurmayı kapatır
+                textContentType="none" // Şifre önerisini devre dışı bırakır
+              />
+            </View>
+
+            {/* Şifre Onay Alanı */}
+            <View style={styles.inputContainer}>
+              <MaterialCommunityIcons
+                name="lock"
+                size={24}
+                color="#BBF246"
+                style={styles.inputIcon}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Confirm Password"
+                textColor="#BBF246"
+                placeholderTextColor="#ccc"
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                secureTextEntry
+                autoComplete="off" // Otomatik doldurmayı kapatır
+                textContentType="none" // Şifre önerisini devre dışı bırakır
+              />
+            </View>
+
             {/* Kayıt Ol Butonu */}
             <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
               <Text style={styles.signUpButtonText}>Sign Up</Text>
@@ -106,7 +154,5 @@ const SignUpScreen = () => {
     </SafeAreaView>
   );
 };
-
-
 
 export default SignUpScreen;

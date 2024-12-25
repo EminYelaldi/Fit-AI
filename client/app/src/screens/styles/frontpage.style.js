@@ -16,14 +16,6 @@ export default StyleSheet.create({
       width: '100%',
       paddingHorizontal: 20,
     },
-    title: {
-      fontSize: 40,
-      fontWeight: 'bold',
-      color: '#BBF246',
-      textAlign: 'center',
-      marginTop:20,
-      fontFamily: 'BebasNeue', // Daha önce yüklenen font
-    },
     getStartedButton: {
       width: '40%',
       height: 50,

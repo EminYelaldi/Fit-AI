@@ -24,13 +24,17 @@ export default StyleSheet.create({
     backgroundColor: "#121212", // Koyu gri kart
     borderRadius: 10,
   },
+  progressBar: {
+    height: 10,
+    width: 350,
+    
+  },
   title: {
-    fontSize: 40,
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 24,
-    color: "#BBF246", // Sarı başlık
-    textAlign: "center", 
-    marginBottom:50,
+    color: "#BBF246",
+    textAlign: "center",
+    marginBottom: 20,
   },
   inputContainer: {
     flexDirection: "row",

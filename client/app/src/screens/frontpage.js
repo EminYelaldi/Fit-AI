@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
 import { useRouter } from 'expo-router';
-import styles from './frontpage.style';
+import styles from './styles/frontpage.style';
 
 const FrontPage = () => {
   const router = useRouter();
@@ -19,7 +19,7 @@ const FrontPage = () => {
       source={require('../assets/photos/man.png')} // Arka plan resmi
       style={styles.background}
       resizeMode="cover"
-      padding= '40'
+      padding= '20'
     >
       <View style={styles.overlay}>
         <Text style={styles.title}>Welcome to Gym App</Text>

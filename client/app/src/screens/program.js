@@ -1,28 +1,76 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useContext } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity,Alert } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"; // İkon kütüphanesi
 import { Divider } from "react-native-paper";
-import styles from './program.style';
+import { ProgramContext } from "../components/program-context";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import styles from './styles/program.style';
 
 const ProgramScreen = () => {
   const params = useLocalSearchParams() || {};
   const router = useRouter();
-  const handleGoBack = () => {
-    router.push('/src/screens/form'); // Ana sayfaya (Front Page) yönlendirme
-  };
+  const { programData, setProgramData } = useContext(ProgramContext);
 
-  // Program verisini al ve JSON olarak çöz
-  let programData = null;
-  try {
-    if (typeof params.program === "string") {
-      programData = JSON.parse(params.program); // JSON string ise parse et
-    } else {
-      console.error("Program parametresi string formatında değil:", params.program);
+  const handleGoBack = () => {
+    router.push('/src/screens/form'); // Ana sayfaya (Front
+  }
+    const saveProgram = () => {
+      Alert.alert('Başarılı', 'Programınız başarılı bir şekilde kaydedildi !');
+      router.push('/src/screens/tabs/main-page');
     }
-  } catch (error) {
-    console.error("JSON Parse Hatası:", error);
+  const saveProgramToDatabase = async () => {
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+      if (!userId) {
+        Alert.alert('Hata', 'Kullanıcı ID bulunamadı. Lütfen tekrar giriş yapın.');
+        return;
+      }
+
+      const response = await fetch('http://localhost:6000/save-program', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          program: programData,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Program veritabanına kaydedilemedi.');
+      }
+
+      Alert.alert('Başarılı', 'Program başarıyla kaydedildi.');
+    } catch (error) {
+      console.error('Program Kaydetme Hatası:', error);
+      Alert.alert('Hata', error.message || 'Program kaydedilirken bir hata oluştu.');
+    }
+  };
+  // Program verisini al ve JSON olarak çöz
+  useEffect(() => {
+    if (params.program) {
+      try {
+        const parsedProgram = JSON.parse(params.program);
+
+        // Yalnızca programData boşsa güncelle
+        if (!programData) {
+          setProgramData(parsedProgram);
+        }
+      } catch (error) {
+        console.error("JSON Parse Hatası:", error);
+      }
+    }
+  }, [params.program]);
+
+  if (!programData) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.infoText}>Program verisi yükleniyor...</Text>
+      </View>
+    );
   }
 
   // Program verisi kontrolü
@@ -62,6 +110,9 @@ const ProgramScreen = () => {
           )}
           contentContainerStyle={styles.listContainer}
         />
+        <TouchableOpacity style={styles.saveButton} onPress={saveProgram}>
+          <Text style={styles.saveButtonText}>Programı Kaydet</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

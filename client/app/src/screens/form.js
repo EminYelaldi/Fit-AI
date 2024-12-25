@@ -1,15 +1,24 @@
 import React, { useState } from "react";
-import { View, Text, Alert, ScrollView, Platform, KeyboardAvoidingView, TouchableOpacity } from "react-native";
-import { TextInput, Button, Card } from "react-native-paper";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  View,
+  Text,
+  Alert,
+  ScrollView,
+  TouchableOpacity,
+  Platform,
+  KeyboardAvoidingView,
+  ActivityIndicator,
+  StyleSheet,
+} from "react-native";
+import { TextInput, Card, ProgressBar } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Slider from "@react-native-community/slider";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useRouter } from "expo-router";
-import styles from "./form.style";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"; // İkon kütüphanesi
-import Loading from "../components/loading";
+import styles from "./styles/form.style";
 
-
-const FormScreen = () => {
+const MultiStepFormScreen = () => {
+  const [step, setStep] = useState(1); // Adım numarası
   const [age, setAge] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
@@ -17,22 +26,37 @@ const FormScreen = () => {
   const [gender, setGender] = useState(""); // Kadın/Erkek seçimi için state
   const [isLoading, setIsLoading] = useState(false); // Yükleme durumu
   const router = useRouter();
-  const handleGoBack = () => {
-    router.push('/src/screens/Login'); // Ana sayfaya (Front Page) yönlendirme
+
+  const totalSteps = 5; // Toplam adım sayısı
+
+  const handleNextStep = () => {
+    if (
+      (step === 1 && !age) ||
+      (step === 2 && !height) ||
+      (step === 3 && !weight) ||
+      (step === 4 && !gender)
+    ) {
+      Alert.alert("Hata", "Lütfen ilgili alanı doldurun!");
+      return;
+    }
+    setStep((prevStep) => prevStep + 1);
   };
+
+  const handlePreviousStep = () => {
+    setStep((prevStep) => Math.max(1, prevStep - 1));
+  };
+
   const handleSubmit = async () => {
     if (!age || !height || !weight || !gender) {
       Alert.alert("Hata", "Lütfen tüm alanları doldurun!");
-      return;arrow
+      return;
     }
-
     const requestBody = {
       message: `yaş:${age}, kilo:${weight}, gün sayısı:${daysPerWeek}, boy:${height}, cinsiyet:${gender}`,
     };
-
     try {
       setIsLoading(true); // Yükleme durumunu başlat
-      const response = await fetch("http://localhost:3001/api/chat", {
+      const response = await fetch("http://localhost:6000/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +70,6 @@ const FormScreen = () => {
       }
 
       const data = await response.json();
-      console.log(JSON.stringify(data.reply.program));
       router.push({
         pathname: "/src/screens/program",
         params: { program: JSON.stringify(data.reply.program) },
@@ -57,134 +80,179 @@ const FormScreen = () => {
       setIsLoading(false); // Yükleme durumunu sonlandır
     }
   };
+
   if (isLoading) {
-    return <Loading />;
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#BBF246" />
+        <Text style={styles.loadingText}>Yükleniyor...</Text>
+      </View>
+    );
   }
 
   return (
-<SafeAreaView style={styles.safeArea}>
-<TouchableOpacity style={styles.backLink} onPress={handleGoBack}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color="#BBF246" />
-        </TouchableOpacity>
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
-       
-      <ScrollView contentContainerStyle={styles.container}>
-       
-        <Text style={[styles.title, { fontFamily: 'BebasNeue' }]}>FORM</Text>
-        <Card style={styles.card}>
+    <SafeAreaView style={styles.safeArea}>
+      {/* İlerleme Çubuğu */}
+      <ProgressBar
+        progress={step / totalSteps}
+        color="#BBF246"
+        style={styles.progressBar}
+      />
 
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text style={styles.title}>{`Step ${step} of ${totalSteps}`}</Text>
+          <Card style={styles.card}>
+            {/* Adım 1: Yaş */}
+            {step === 1 && (
+              <View style={styles.inputContainer}>
+                <MaterialCommunityIcons
+                  name="calendar"
+                  size={24}
+                  color="#BBF246"
+                  style={styles.inputIcon}
+                />
+                <TextInput
+                  style={styles.input}
+                  textColor="#ccc"
+                  placeholder="Enter Your Age"
+                  placeholderTextColor="#aaa"
+                  value={age}
+                  onChangeText={setAge}
+                  keyboardType="numeric"
+                  autoCapitalize="none"
+                />
+              </View>
+            )}
 
-          {/* Yaş */}
-          <View style={styles.inputContainer}>
-            <MaterialCommunityIcons name="arrow-right" size={24} color="#BBF246" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              textColor='#ccc'
-              placeholder="Age"
-              placeholderTextColor="#aaa"
-              value={age}
-              onChangeText={setAge}
-              keyboardType="numeric"
-              autoCapitalize="none"
-            />
-          </View>
+            {/* Adım 2: Boy */}
+            {step === 2 && (
+              <View style={styles.inputContainer}>
+                <MaterialCommunityIcons
+                  name="human-male-height"
+                  size={24}
+                  color="#BBF246"
+                  style={styles.inputIcon}
+                />
+                <TextInput
+                  style={styles.input}
+                  textColor="#ccc"
+                  placeholder="Enter Your Height (Cm)"
+                  placeholderTextColor="#aaa"
+                  value={height}
+                  onChangeText={setHeight}
+                  keyboardType="numeric"
+                  autoCapitalize="none"
+                />
+              </View>
+            )}
 
-          {/* Boy */}
-          <View style={styles.inputContainer}>
-            <MaterialCommunityIcons name="arrow-right" size={24} color="#BBF246" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              textColor='#ccc'
-              placeholder="Height (Cm)"
-              placeholderTextColor="#aaa"
-              value={height}
-              onChangeText={setHeight}
-              keyboardType="numeric"
-              autoCapitalize="none"
-            />
-          </View>
+            {/* Adım 3: Kilo */}
+            {step === 3 && (
+              <View style={styles.inputContainer}>
+                <MaterialCommunityIcons
+                  name="weight-kilogram"
+                  size={24}
+                  color="#BBF246"
+                  style={styles.inputIcon}
+                />
+                <TextInput
+                  style={styles.input}
+                  textColor="#ccc"
+                  placeholder="Enter Your Weight (Kg)"
+                  placeholderTextColor="#aaa"
+                  value={weight}
+                  onChangeText={setWeight}
+                  keyboardType="numeric"
+                  autoCapitalize="none"
+                />
+              </View>
+            )}
 
-          {/* Kilo */}
-          <View style={styles.inputContainer}>
-            <MaterialCommunityIcons name="arrow-right" size={24} color="#BBF246" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              textColor='#ccc'
-              placeholder="Weight (Kg)"
-              placeholderTextColor="#aaa"
-              value={weight}
-              onChangeText={setWeight}
-              keyboardType="numeric"
-              autoCapitalize="none"
-            />
-          </View>
+            {/* Adım 4: Cinsiyet */}
+            {step === 4 && (
+              <View style={styles.genderContainer}>
+                <Text style={styles.sliderText}>Select Your Gender</Text>
+                <View style={styles.genderOptions}>
+                  <TouchableOpacity
+                    style={[
+                      styles.genderButton,
+                      gender === "Women" && styles.selectedGenderButton,
+                    ]}
+                    onPress={() => setGender("Women")}
+                  >
+                    <Text
+                      style={[
+                        styles.genderButtonText,
+                        gender === "Women" && styles.selectedGenderButtonText,
+                      ]}
+                    >
+                      Women
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.genderButton,
+                      gender === "Man" && styles.selectedGenderButton,
+                    ]}
+                    onPress={() => setGender("Man")}
+                  >
+                    <Text
+                      style={[
+                        styles.genderButtonText,
+                        gender === "Man" && styles.selectedGenderButtonText,
+                      ]}
+                    >
+                      Man
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
 
-          {/* Cinsiyet */}
-          <View style={styles.genderContainer}>
-            <View style={styles.genderOptions}>
-              <TouchableOpacity
-                style={[
-                  styles.genderButton,
-                  gender === "Women" && styles.selectedGenderButton,
-                ]}
-                onPress={() => setGender("Women")}
-              >
-                <Text
-                  style={[
-                    styles.genderButtonText,
-                    gender === "Women" && styles.selectedGenderButtonText,
-                  ]}
-                >
-                  Women
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.genderButton,
-                  gender === "Man" && styles.selectedGenderButton,
-                ]}
-                onPress={() => setGender("Man")}
-              >
-                <Text
-                  style={[
-                    styles.genderButtonText,
-                    gender === "Man" && styles.selectedGenderButtonText,
-                  ]}
-                >
-                  Man
-                </Text>
-              </TouchableOpacity>
+            {/* Adım 5: Haftalık Gün Sayısı */}
+            {step === 5 && (
+              <>
+                <Text style={styles.sliderText}>Days Per Week: {daysPerWeek}</Text>
+                <Slider
+                  style={styles.slider}
+                  minimumValue={1}
+                  maximumValue={7}
+                  step={1}
+                  value={daysPerWeek}
+                  onValueChange={(value) => setDaysPerWeek(value)}
+                  minimumTrackTintColor="#BBF246"
+                  maximumTrackTintColor="#ccc"
+                  thumbTintColor="#BBF246"
+                />
+              </>
+            )}
+
+            {/* Adım Butonları */}
+            <View style={styles.buttonContainer}>
+              {step > 1 && (
+                <TouchableOpacity style={styles.neonButton} onPress={handlePreviousStep}>
+                  <Text style={styles.neonButtonText}>Back</Text>
+                </TouchableOpacity>
+              )}
+              {step < totalSteps ? (
+                <TouchableOpacity style={styles.neonButton} onPress={handleNextStep}>
+                  <Text style={styles.neonButtonText}>Next</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity style={styles.neonButton} onPress={handleSubmit}>
+                  <Text style={styles.neonButtonText}>Submit</Text>
+                </TouchableOpacity>
+              )}
             </View>
-          </View>
-
-          {/* Slider */}
-          <View style={styles.sliderContainer}>
-            <Text style={styles.sliderText}>Days Per Week: {daysPerWeek}</Text>
-            <Slider
-              style={styles.slider}
-              minimumValue={1}
-              maximumValue={7}
-              step={1}
-              value={daysPerWeek}
-              onValueChange={(value) => setDaysPerWeek(value)}
-              minimumTrackTintColor="#BBF246"
-              maximumTrackTintColor="#ccc"
-              thumbTintColor="#BBF246"
-            />
-          </View>
-
-          {/* Gönder Butonu */}
-          <TouchableOpacity style={styles.neonButton} onPress={handleSubmit}>
-            <Text style={styles.neonButtonText}>SEND</Text>
-          </TouchableOpacity>
-        </Card>
-      </ScrollView>
-    </KeyboardAvoidingView>
+          </Card>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
-export default FormScreen;
+export default MultiStepFormScreen;

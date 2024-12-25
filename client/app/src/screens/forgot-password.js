@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity,handleGoBack,SafeAreaView,KeyboardAvoidingView,Platform,ScrollView,Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import styles from './forgot-password.style';
+import styles from './styles/forgot-password.style';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"; // İkon kütüphanesi
 
 

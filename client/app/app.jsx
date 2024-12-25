@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
 import FrontPage from './src/screens/frontpage';
-import FormScreen from './src/screens/form';
 import ProgramScreen from './src/screens/program';
+import FormScreen from './src/screens/form';
+import HomeScreen from './src/screens/tabs/main-page';
 import { Buffer } from 'buffer';
+import { ProgramProvider } from "./src/components/program-context";
+
 
 global.Buffer = Buffer;
 
@@ -33,7 +36,10 @@ const App = () => {
   
   return (
     <SafeAreaView style={styles.container}>
-      <FormScreen />
+      <ProgramProvider>
+      <HomeScreen />
+      <ProgramScreen/>
+      </ProgramProvider>
     </SafeAreaView>
   );
 };
