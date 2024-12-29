@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Slider from "@react-native-community/slider";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useRouter } from "expo-router";
+import { ProgramContext } from "../components/program-context";
 import styles from "./styles/form.style";
 
 const MultiStepFormScreen = () => {
@@ -26,6 +27,8 @@ const MultiStepFormScreen = () => {
   const [gender, setGender] = useState(""); // Kadın/Erkek seçimi için state
   const [isLoading, setIsLoading] = useState(false); // Yükleme durumu
   const router = useRouter();
+  const { setProgramData } = useContext(ProgramContext);
+
 
   const totalSteps = 5; // Toplam adım sayısı
 
@@ -46,39 +49,24 @@ const MultiStepFormScreen = () => {
     setStep((prevStep) => Math.max(1, prevStep - 1));
   };
 
-  const handleSubmit = async () => {
-    if (!age || !height || !weight || !gender) {
+  const handleSubmit = () => {
+    if (!age || !weight || !height || !gender) {
       Alert.alert("Hata", "Lütfen tüm alanları doldurun!");
       return;
     }
-    const requestBody = {
-      message: `yaş:${age}, kilo:${weight}, gün sayısı:${daysPerWeek}, boy:${height}, cinsiyet:${gender}`,
-    };
-    try {
-      setIsLoading(true); // Yükleme durumunu başlat
-      const response = await fetch("http://localhost:6000/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Program oluşturulurken bir hata oluştu!");
-      }
+    // Verileri Context'e kaydet
+    setProgramData({
+      age,
+      weight,
+      height,
+      gender,
+      daysPerWeek,
+      program: null, // Program daha sonra oluşturulacak
+    });
 
-      const data = await response.json();
-      router.push({
-        pathname: "/src/screens/program",
-        params: { program: JSON.stringify(data.reply.program) },
-      });
-    } catch (error) {
-      Alert.alert("Hata", error.message);
-    } finally {
-      setIsLoading(false); // Yükleme durumunu sonlandır
-    }
+    // VotePage sayfasına yönlendir
+    router.push("/src/screens/votepage");
   };
 
   if (isLoading) {

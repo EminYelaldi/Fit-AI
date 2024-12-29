@@ -26,16 +26,18 @@ export default StyleSheet.create({
   },
   progressBar: {
     height: 10,
-    width: 350,
-    
+    width: '90%',
+    marginHorizontal:20,
+    backgroundColor:'#222',
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#BBF246",
     textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 50,
   },
+  
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",

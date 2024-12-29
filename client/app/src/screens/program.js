@@ -54,13 +54,14 @@ const ProgramScreen = () => {
     if (params.program) {
       try {
         const parsedProgram = JSON.parse(params.program);
-
-        // Yalnızca programData boşsa güncelle
-        if (!programData) {
+        if (Array.isArray(parsedProgram)) {
           setProgramData(parsedProgram);
+        } else {
+          Alert.alert("Hata", "Program verisi geçersiz!");
         }
       } catch (error) {
         console.error("JSON Parse Hatası:", error);
+        Alert.alert("Hata", "Program verisi doğru bir formatta değil!");
       }
     }
   }, [params.program]);

@@ -95,6 +95,7 @@ const TabLayout = () => (
     ),
   }}
 />
+
   </Tabs>
 );
 

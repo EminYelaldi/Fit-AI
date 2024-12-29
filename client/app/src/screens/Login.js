@@ -25,34 +25,35 @@ const LoginScreen = () => {
       Alert.alert('Hata', 'Lütfen tüm alanları doldurun!');
       return;
     }
-
+  
     if (!/\S+@\S+\.\S+/.test(email)) {
       Alert.alert('Hata', 'Geçerli bir e-posta adresi girin!');
       return;
     }
-
+  
     try {
-      // Backend ile GET isteği oluştur
-      const response = await fetch(`http://localhost:6000/get-user?email=${encodeURIComponent(email)}`, {
-        method: 'GET',
+      // Backend ile POST isteği oluştur
+      const response = await fetch('http://localhost:6000/get-user-by-email', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
       });
-
+    
       if (!response.ok) {
-        throw new Error('Kullanıcı bulunamadı. Lütfen bilgilerinizi kontrol edin.');
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || 'Bir hata oluştu.');
       }
-
+    
       const userData = await response.json();
-
-      // Şifre kontrolü
-      if (userData.password !== password) {
-        throw new Error('Şifre yanlış. Lütfen tekrar deneyin.');
-      }
+    console.log(userData);
       // Kullanıcı ID'sini AsyncStorage içine kaydedin
       await AsyncStorage.setItem('userId', userData.id);
-
+    
       // Giriş başarılı
       Alert.alert('Başarılı', `Hoşgeldiniz, ${userData.email}`);
       router.push('/src/screens/form'); // Form ekranına yönlendirme
@@ -60,7 +61,7 @@ const LoginScreen = () => {
       console.error('Giriş Hatası:', error);
       Alert.alert('Hata', error.message || 'Bir hata oluştu.');
     }
-  };
+  }; 
 
   const handleForgotPassword = () => {
     router.push('/src/screens/forgot-password');

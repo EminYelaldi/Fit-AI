@@ -204,6 +204,37 @@ app.get('/get-user', async (req, res) => {
     res.status(500).json({ message: 'Kullanıcı alınırken bir hata oluştu.', error: error.message });
   }
 });
+
+ // Mail ile kullanıcı getirme
+  app.post('/get-user-by-email', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      // Kullanıcıyı e-posta adresine göre bul
+      const userQuery = await db.collection('Users').where('email', '==', email).get();
+      console.log(req.body)
+      if (userQuery.empty) {
+        return res.status(404).json({ message: 'Kullanıcı bulunamadı' });
+      }
+  
+      // İlk kullanıcı belgesini al
+      const userDoc = userQuery.docs[0];
+      const userData = userDoc.data();
+  
+      // Şifre kontrolü
+      if (userData.password !== password) {
+        return res.status(401).json({ message: 'Şifre hatalı' });
+      }
+  
+      // Başarılı ise kullanıcıyı döndür
+      res.status(200).json({ id: userDoc.id, ...userData });
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching user', error: error.message });
+    }
+  });
+  
+
+
 app.post('/save-program', async (req, res) => {
   try {
     const { userId, program } = req.body;
