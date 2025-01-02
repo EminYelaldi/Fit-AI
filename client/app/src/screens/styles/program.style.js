@@ -68,15 +68,16 @@ export default StyleSheet.create({
     color: '#BBF246'
   },
   saveButton: {
-    marginTop: 20,
     backgroundColor: '#BBF246',
-    padding: 10,
-    marginHorizontal:30,
+    padding: 15,
     borderRadius: 8,
     alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+    marginHorizontal: 20,
   },
   saveButtonText: {
-    color: '#0c0c14',
+    color: '#000',
     fontSize: 16,
     fontWeight: 'bold',
   },

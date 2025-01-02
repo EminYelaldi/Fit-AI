@@ -1,39 +1,45 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import { useRouter } from 'expo-router';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from './styles/frontpage.style';
 
 const FrontPage = () => {
   const router = useRouter();
 
   const handleGetStarted = () => {
-    router.push('/src/screens/sign-up'); // Get Started için hedef rota
+    router.push('/src/screens/sign-up');
   };
 
   const handleLogin = () => {
-    router.push('/src/screens/Login'); // Login için hedef rota
+    router.push('/src/screens/Login');
   };
 
   return (
     <ImageBackground
-      source={require('../assets/photos/man.png')} // Arka plan resmi
+      source={require('../assets/photos/man.png')}
       style={styles.background}
       resizeMode="cover"
-      padding= '20'
     >
       <View style={styles.overlay}>
-        <Text style={styles.title}>Welcome to Gym App</Text>
-
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.getStartedButton} onPress={handleGetStarted}>
-            <Text style={styles.getStartedText}>Get Started</Text>
+          <TouchableOpacity 
+            style={styles.getStartedButton} 
+            onPress={handleGetStarted}
+          >
+            <Text style={styles.getStartedText}>
+              HEMEN BAŞLA <MaterialCommunityIcons name="arrow-right" size={20} color="#000" />
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-            <Text style={styles.loginText}>Login</Text>
+          <TouchableOpacity 
+            style={styles.loginButton} 
+            onPress={handleLogin}
+          >
+            <Text style={styles.loginText}>GİRİŞ YAP</Text>
           </TouchableOpacity>
         </View>
-        </View>
+      </View>
     </ImageBackground>
   );
 };

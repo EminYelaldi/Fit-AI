@@ -1,47 +1,59 @@
 import { StyleSheet } from "react-native";
+
 export default StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   safeArea: {
     flex: 1,
-    backgroundColor: '#121212', // SafeAreaView'in beyaz kalmasını önlemek için siyah
-  },
-  backLinkText: {
-    fontSize: 16,
-    color: '#BBF246', // Fosforlu sarı renk
-    textDecorationLine: 'underline',
   },
   scrollContainer: {
     flexGrow: 1,
+    justifyContent: 'center',
   },
   background: {
     flex: 1,
+    padding: 20,
     justifyContent: 'center',
+  },
+  logoContainer: {
     alignItems: 'center',
-    paddingHorizontal: 23, // Yandan biraz boşluk bırakır
-    backgroundColor: '#121212', // Siyah arka plan
-    paddingBottom:70,
-
+    marginBottom: 30,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   logo: {
-    width: 90,
-    height: 90,
-    marginBottom: 40,
+    width: 120,
+    height: 120,
+    marginLeft: 10,
   },
   title: {
-    fontSize: 50,
+    fontSize: 36,
     fontWeight: 'bold',
-    color: '#BBF246', // Fosforlu sarı
+    color: '#BBF246',
+    textAlign: 'center',
+    marginBottom: 10,
+    fontFamily: 'BebasNeue',
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
     marginBottom: 40,
   },
+  formContainer: {
+    width: '100%',
+    paddingHorizontal: 20,
+  },
   inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    backgroundColor: "#222",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1a1a1a',
+    borderRadius: 12,
+    marginBottom: 15,
+    paddingHorizontal: 15,
     borderWidth: 1,
-    borderColor: "#BBF246",
-    borderRadius: 8,
-    marginBottom: 16,
-    paddingHorizontal: 10,
+    borderColor: '#333',
   },
   inputIcon: {
     marginRight: 10,
@@ -49,61 +61,67 @@ export default StyleSheet.create({
   input: {
     flex: 1,
     height: 50,
-    color: "#BBF246",
-    backgroundColor:"#222",
+    backgroundColor: 'transparent',
+    fontSize: 16,
   },
-  neonButton: {
-    width: "100%",
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#BBF246",
-    borderRadius: 8,
-    marginBottom: 16,
-    marginTop: 10,
-  },
-  neonButtonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#000", // Siyah yazı
+  forgotPassword: {
+    alignSelf: 'flex-end',
+    marginBottom: 30,
   },
   forgotPasswordText: {
-    fontSize: 16,
-    color: '#FFFF', // Fosforlu sarı
-    textDecorationLine: 'underline',
-    marginBottom: 10,
-    marginLeft:'220',
-  },
-  linkContainer: {
-    alignItems: 'right',
-    marginVertical: 3,
-    width:'100%',
-  },
-  linkText: {
-    fontSize: 16,
-    color: '#ccc', // Fosforlu sarı
-    textAlign:"right",
-  },
-  backLink: {
-    position: "absolute", // Geri butonu pozisyonu
-    top: 15,
-    left: 15,
-    zIndex: 10,
-  },
-  goBackText: {
-    fontSize: 16,
     color: '#BBF246',
-    marginTop:30,
-
+    fontSize: 14,
   },
-  backContainer:{
-    justifyContent:'space-between',
-    flexDirection: "row",
+  loginButton: {
+    width: '100%',
+    height: 50,
+    borderRadius: 25,
+    overflow: 'hidden',
+    marginBottom: 20,
+    elevation: 3,
+    shadowColor: '#BBF246',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
-  accountText:{
-    fontSize: 16,
-    color:'#ccc',
-    marginRight:4,
-    marginTop:30,
+  gradient: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loginButtonText: {
+    color: '#000',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  signupContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  signupText: {
+    color: '#666',
+    fontSize: 14,
+  },
+  signupLink: {
+    color: '#BBF246',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  // Animasyon ve gölge efektleri için ek stiller
+  buttonShadow: {
+    shadowColor: '#BBF246',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+  },
+  inputFocus: {
+    borderColor: '#BBF246',
+    borderWidth: 1,
   },
 });

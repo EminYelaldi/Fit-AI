@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
 import FrontPage from './src/screens/frontpage';
-import ProgramScreen from './src/screens/program';
+import ProgramScreen from './src/screens/workout-program';
 import FormScreen from './src/screens/form';
 import HomeScreen from './src/screens/tabs/main-page';
 import { Buffer } from 'buffer';

@@ -1,47 +1,46 @@
 import { StyleSheet } from "react-native";
-export default StyleSheet.create({
 
+export default StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#121212', // SafeAreaView'in beyaz kalmasını önlemek için
+    backgroundColor: '#121212',
   },
-  scrollContainer: {
-    flexGrow: 1,
-  },
-  backLink: {
-    position: "absolute",
-    top: 15,
-    left: 15,
-    zIndex: 10,
-  },
-  backLinkText: {
-    fontSize: 16,
-    color: '#BBF246', // Fosforlu sarı renk
-    textDecorationLine: 'underline',
-  },
-  background: {
+  container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 16, // Yandan biraz boşluk bırakır
-    backgroundColor: '#121212', // Düz arka plan rengi
+    padding: 20,
+    backgroundColor: '#121212',
   },
   title: {
-    fontSize: 50,
+    fontSize: 40,
     fontWeight: 'bold',
     color: '#BBF246',
-    marginBottom: 60,
+    textAlign: 'center',
+    marginVertical: 30,
+    fontFamily: 'BebasNeue',
+    letterSpacing: 2,
+    textShadowColor: 'rgba(187, 242, 70, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+  },
+  card: {
+    backgroundColor: '#1a1a1a',
+    borderRadius: 15,
+    padding: 20,
+    marginBottom: 20,
+    elevation: 5,
+    borderWidth: 1,
+    borderColor: '#BBF246',
   },
   inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    backgroundColor: "#222",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#222',
+    borderRadius: 12,
+    marginBottom: 20,
+    paddingHorizontal: 15,
     borderWidth: 1,
-    borderColor: "#BBF246",
-    borderRadius: 8,
-    marginBottom: 16,
-    paddingHorizontal: 10,
+    borderColor: '#333',
+    height: 60,
   },
   inputIcon: {
     marginRight: 10,
@@ -49,39 +48,69 @@ export default StyleSheet.create({
   input: {
     flex: 1,
     height: 50,
-    color: "#BBF246",
-    backgroundColor:"#222",
+    color: '#fff',
+    fontSize: 18,
+    backgroundColor: 'transparent',
   },
   signUpButton: {
-    width: '100%',
-    height: 50,
     backgroundColor: '#BBF246',
-    justifyContent: 'center',
+    paddingVertical: 18,
+    borderRadius: 30,
     alignItems: 'center',
-    borderRadius: 8,
-    marginBottom: 16,
-    marginTop: 10,
+    marginTop: 20,
+    shadowColor: '#BBF246',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
   },
   signUpButtonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
     color: '#000',
+    fontSize: 20,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    fontFamily: 'BebasNeue',
+  },
+  backContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  accountText: {
+    color: '#666',
+    fontSize: 16,
+    marginRight: 5,
+    fontFamily: 'BebasNeue',
   },
   goBackText: {
-    fontSize: 16,
     color: '#BBF246',
-    marginTop:30,
-
-  },
-  backContainer:{
-    justifyContent:'space-between',
-    flexDirection: "row",
-  },
-  accountText:{
     fontSize: 16,
-    color:'#ccc',
-    marginRight:4,
-    marginTop:30,
+    fontWeight: 'bold',
+    fontFamily: 'BebasNeue',
   },
-
-})
+  errorText: {
+    color: '#ff4444',
+    fontSize: 14,
+    marginTop: -15,
+    marginBottom: 15,
+    marginLeft: 5,
+  },
+  // Yeni animasyon efektleri için stiller
+  inputFocus: {
+    borderColor: '#BBF246',
+    transform: [{ scale: 1.02 }],
+  },
+  buttonShadow: {
+    shadowColor: '#BBF246',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+  }
+});

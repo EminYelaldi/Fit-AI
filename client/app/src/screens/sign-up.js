@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
   ScrollView,
@@ -11,7 +10,8 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // İkon kütüphanesi
+import { TextInput, Card } from "react-native-paper";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles/sign-up.style';
 
 const SignUpScreen = () => {
@@ -58,25 +58,18 @@ const SignUpScreen = () => {
   };
 
   const handleGoBack = () => {
-    router.push('/src/screens/login'); // Giriş ekranına geri dönüş
+    router.push('/src/screens/Login');
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
- 
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.background}>
-            {/* Başlık */}
-            <Text style={[styles.title, { fontFamily: 'BebasNeue' }]}>Sign Up</Text>
-
-            {/* Kayıt Alanları */}
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text style={styles.title}>HESAP OLUŞTUR</Text>
+          <Card style={styles.card}>
             <View style={styles.inputContainer}>
               <MaterialCommunityIcons
                 name="email"
@@ -86,17 +79,18 @@ const SignUpScreen = () => {
               />
               <TextInput
                 style={styles.input}
-                textColor="#BBF246"
-                placeholder="Email"
-                placeholderTextColor="#ccc"
+                placeholder="E-posta"
+                textColor="#fff"
+                placeholderTextColor="#666"
                 value={email}
                 onChangeText={setEmail}
-                keyboardType="email-address"
                 autoCapitalize="none"
+                keyboardType="email-address"
+                mode="flat"
+                underlineColor="transparent"
               />
             </View>
 
-            {/* Şifre Alanı */}
             <View style={styles.inputContainer}>
               <MaterialCommunityIcons
                 name="lock"
@@ -106,49 +100,52 @@ const SignUpScreen = () => {
               />
               <TextInput
                 style={styles.input}
-                placeholder="Password"
-                textColor="#BBF246"
-                placeholderTextColor="#ccc"
+                placeholder="Şifre"
+                textColor="#fff"
+                placeholderTextColor="#666"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
-                autoComplete="off" // Otomatik doldurmayı kapatır
-                textContentType="none" // Şifre önerisini devre dışı bırakır
+                mode="flat"
+                underlineColor="transparent"
+                autoCapitalize="none"
+                autoCorrect={false}
               />
             </View>
 
-            {/* Şifre Onay Alanı */}
             <View style={styles.inputContainer}>
               <MaterialCommunityIcons
-                name="lock"
+                name="lock-check"
                 size={24}
                 color="#BBF246"
                 style={styles.inputIcon}
               />
               <TextInput
                 style={styles.input}
-                placeholder="Confirm Password"
-                textColor="#BBF246"
-                placeholderTextColor="#ccc"
+                placeholder="Şifre Tekrar"
+                textColor="#fff"
+                placeholderTextColor="#666"
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
                 secureTextEntry
-                autoComplete="off" // Otomatik doldurmayı kapatır
-                textContentType="none" // Şifre önerisini devre dışı bırakır
+                mode="flat"
+                underlineColor="transparent"
+                autoCapitalize="none"
+                autoCorrect={false}
               />
             </View>
 
-            {/* Kayıt Ol Butonu */}
             <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
-              <Text style={styles.signUpButtonText}>Sign Up</Text>
+              <Text style={styles.signUpButtonText}>
+                KAYIT OL <MaterialCommunityIcons name="arrow-right" size={20} color="#000" />
+              </Text>
             </TouchableOpacity>
 
-            {/* Geri Dönüş Butonu */}
             <TouchableOpacity onPress={handleGoBack} style={styles.backContainer}>
-              <Text style={styles.accountText}>Already have an account?</Text>
-              <Text style={styles.goBackText}>Login</Text>
+              <Text style={styles.accountText}>Zaten hesabın var mı?</Text>
+              <Text style={styles.goBackText}>Giriş Yap</Text>
             </TouchableOpacity>
-          </View>
+          </Card>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

@@ -1,55 +1,85 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-    
-    background: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor:'#000'
+  background: {
+    flex: 1,
+    width: '100%',
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    justifyContent: 'space-between',
+    padding: 20,
+  },
+  title: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: '#BBF246',
+    textAlign: 'center',
+    marginTop: '40%',
+    fontFamily: 'BebasNeue',
+    letterSpacing: 2,
+    textShadowColor: 'rgba(187, 242, 70, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: '#fff',
+    textAlign: 'center',
+    marginTop: 10,
+    fontFamily: 'BebasNeue',
+    letterSpacing: 1,
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 50,
+    left: 20,
+    right: 20,
+    gap: 15,
+  },
+  getStartedButton: {
+    backgroundColor: '#BBF246',
+    paddingVertical: 18,
+    borderRadius: 30,
+    alignItems: 'center',
+    shadowColor: '#BBF246',
+    shadowOffset: {
+      width: 0,
+      height: 4,
     },
-    overlay: {
-      flex: 1,
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.3)', // Siyah transparan katman
-      width: '100%',
-      paddingHorizontal: 20,
-    },
-    getStartedButton: {
-      width: '40%',
-      height: 50,
-      backgroundColor: '#BBF246', // Fosforlu sarı
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 20,
-    },
-    buttonContainer: {
-      width: '100%',
-      alignItems: 'center',
-      marginBottom: 40,
-      flexDirection:'row',
-      justifyContent:'space-between',
-    },
-    loginButton: {
-      width: '40%',
-      height: 50,
-      borderWidth: 2,
-      borderColor: '#BBF246', // Fosforlu sarı kenarlık
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 20,
-    },
-    getStartedText: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: '#000', // Siyah yazı
-      
-    },
-    loginText: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: '#ffff', // Siyah yazı
-      
-    },
-  });
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+    transform: [{ scale: 1 }],
+  },
+  getStartedText: {
+    color: '#000',
+    fontSize: 20,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    fontFamily: 'BebasNeue',
+  },
+  loginButton: {
+    backgroundColor: 'transparent',
+    paddingVertical: 18,
+    borderRadius: 30,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#BBF246',
+  },
+  loginText: {
+    color: '#BBF246',
+    fontSize: 20,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    fontFamily: 'BebasNeue',
+  },
+  motivationalText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 20,
+    fontStyle: 'italic',
+  }
+});

@@ -1,8 +1,8 @@
 import React, { useEffect, useContext } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity,Alert } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"; // İkon kütüphanesi
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Divider } from "react-native-paper";
 import { ProgramContext } from "../components/program-context";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,42 +14,14 @@ const ProgramScreen = () => {
   const { programData, setProgramData } = useContext(ProgramContext);
 
   const handleGoBack = () => {
-    router.push('/src/screens/form'); // Ana sayfaya (Front
-  }
-    const saveProgram = () => {
-      Alert.alert('Başarılı', 'Programınız başarılı bir şekilde kaydedildi !');
-      router.push('/src/screens/tabs/main-page');
-    }
-  const saveProgramToDatabase = async () => {
-    try {
-      const userId = await AsyncStorage.getItem('userId');
-      if (!userId) {
-        Alert.alert('Hata', 'Kullanıcı ID bulunamadı. Lütfen tekrar giriş yapın.');
-        return;
-      }
-
-      const response = await fetch('http://localhost:6000/save-program', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId,
-          program: programData,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Program veritabanına kaydedilemedi.');
-      }
-
-      Alert.alert('Başarılı', 'Program başarıyla kaydedildi.');
-    } catch (error) {
-      console.error('Program Kaydetme Hatası:', error);
-      Alert.alert('Hata', error.message || 'Program kaydedilirken bir hata oluştu.');
-    }
+    router.push('/src/screens/form');
   };
-  // Program verisini al ve JSON olarak çöz
+
+  const handleSaveAndNavigate = () => {
+    // Ana sayfaya yönlendir
+    router.push('/src/screens/tabs/main-page');
+  };
+
   useEffect(() => {
     if (params.program) {
       try {
@@ -74,8 +46,7 @@ const ProgramScreen = () => {
     );
   }
 
-  // Program verisi kontrolü
-  if (!programData || !Array.isArray(programData)) {
+  if (!Array.isArray(programData)) {
     return (
       <View style={styles.container}>
         <Text style={styles.infoText}>
@@ -100,7 +71,6 @@ const ProgramScreen = () => {
               <Text style={styles.dayTitle}>Day {item.gün}</Text>
               {item.hareketler.map((hareket, index) => (
                 <View key={`hareket-${index}`} style={styles.exerciseContainer}>
-
                   <Text style={styles.exerciseText}>
                     {hareket.adı} - {hareket.set} Set x {hareket.tekrar} Reps
                   </Text>
@@ -111,8 +81,11 @@ const ProgramScreen = () => {
           )}
           contentContainerStyle={styles.listContainer}
         />
-        <TouchableOpacity style={styles.saveButton} onPress={saveProgram}>
-          <Text style={styles.saveButtonText}>Programı Kaydet</Text>
+        <TouchableOpacity 
+          style={styles.saveButton} 
+          onPress={handleSaveAndNavigate}
+        >
+          <Text style={styles.saveButtonText}>Programı Onayla</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -17,6 +17,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { useRouter } from "expo-router";
 import { ProgramContext } from "../components/program-context";
 import styles from "./styles/form.style";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MultiStepFormScreen = () => {
   const [step, setStep] = useState(1); // Adım numarası
@@ -27,8 +28,14 @@ const MultiStepFormScreen = () => {
   const [gender, setGender] = useState(""); // Kadın/Erkek seçimi için state
   const [isLoading, setIsLoading] = useState(false); // Yükleme durumu
   const router = useRouter();
-  const { setProgramData } = useContext(ProgramContext);
+  const { programData, setProgramData } = useContext(ProgramContext);
 
+// Program varsa anasayfaya yönlendir
+useEffect(() => {
+  if (programData?.program) {
+    router.push("/src/screens/main-page");
+  }
+}, [programData]);
 
   const totalSteps = 5; // Toplam adım sayısı
 
@@ -49,24 +56,72 @@ const MultiStepFormScreen = () => {
     setStep((prevStep) => Math.max(1, prevStep - 1));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!age || !weight || !height || !gender) {
       Alert.alert("Hata", "Lütfen tüm alanları doldurun!");
       return;
     }
 
-    // Verileri Context'e kaydet
-    setProgramData({
-      age,
-      weight,
-      height,
-      gender,
-      daysPerWeek,
-      program: null, // Program daha sonra oluşturulacak
-    });
+    setIsLoading(true);
+    try {
+      // Kullanıcı ID'sini al
+      const userId = await AsyncStorage.getItem('userId');
+      const userEmail = await AsyncStorage.getItem('userEmail');
 
-    // VotePage sayfasına yönlendir
-    router.push("/src/screens/votepage");
+      if (!userId || !userEmail) {
+        throw new Error('Kullanıcı bilgileri bulunamadı');
+      }
+
+      // Önce mevcut kullanıcı bilgilerini al
+      const userResponse = await fetch(`http://localhost:6000/get-program/${userId}`);
+      const userData = await userResponse.json();
+
+      if (!userResponse.ok) {
+        throw new Error('Kullanıcı bilgileri alınamadı');
+      }
+
+      // Form verilerini kaydet
+      const response = await fetch(`http://localhost:6000/update-user/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: userEmail,
+          password: userData.password || '', // Mevcut şifreyi koru
+          gymProgram: userData.gymProgram || null, // Mevcut spor programını koru
+          dietProgram: userData.dietProgram || null, // Mevcut diyet programını koru
+          age: parseInt(age),
+          weight: parseInt(weight),
+          height: parseInt(height),
+          gender,
+          daysPerWeek
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Form bilgileri kaydedilemedi');
+      }
+
+      // Verileri Context'e kaydet
+      setProgramData({
+        age,
+        weight,
+        height,
+        gender,
+        daysPerWeek,
+        program: null,
+      });
+
+      // VotePage sayfasına yönlendir
+      router.push("/src/screens/votepage");
+    } catch (error) {
+      console.error('Form Kaydetme Hatası:', error);
+      Alert.alert("Hata", error.message || "Form bilgileri kaydedilirken bir hata oluştu");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isLoading) {
@@ -92,7 +147,7 @@ const MultiStepFormScreen = () => {
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <ScrollView contentContainerStyle={styles.container}>
-          <Text style={styles.title}>{`Step ${step} of ${totalSteps}`}</Text>
+          <Text style={styles.title}>{`Adım ${step} / ${totalSteps}`}</Text>
           <Card style={styles.card}>
             {/* Adım 1: Yaş */}
             {step === 1 && (
@@ -106,7 +161,7 @@ const MultiStepFormScreen = () => {
                 <TextInput
                   style={styles.input}
                   textColor="#ccc"
-                  placeholder="Enter Your Age"
+                  placeholder="Yaşınızı Giriniz"
                   placeholderTextColor="#aaa"
                   value={age}
                   onChangeText={setAge}
@@ -128,7 +183,7 @@ const MultiStepFormScreen = () => {
                 <TextInput
                   style={styles.input}
                   textColor="#ccc"
-                  placeholder="Enter Your Height (Cm)"
+                  placeholder="Boyunuzu Giriniz (Cm)"
                   placeholderTextColor="#aaa"
                   value={height}
                   onChangeText={setHeight}
@@ -150,7 +205,7 @@ const MultiStepFormScreen = () => {
                 <TextInput
                   style={styles.input}
                   textColor="#ccc"
-                  placeholder="Enter Your Weight (Kg)"
+                  placeholder="Kilonuzu Giriniz (Kg)"
                   placeholderTextColor="#aaa"
                   value={weight}
                   onChangeText={setWeight}
@@ -163,7 +218,7 @@ const MultiStepFormScreen = () => {
             {/* Adım 4: Cinsiyet */}
             {step === 4 && (
               <View style={styles.genderContainer}>
-                <Text style={styles.sliderText}>Select Your Gender</Text>
+                <Text style={styles.sliderText}>Cinsiyetinizi Seçiniz</Text>
                 <View style={styles.genderOptions}>
                   <TouchableOpacity
                     style={[
@@ -204,7 +259,7 @@ const MultiStepFormScreen = () => {
             {/* Adım 5: Haftalık Gün Sayısı */}
             {step === 5 && (
               <>
-                <Text style={styles.sliderText}>Days Per Week: {daysPerWeek}</Text>
+                <Text style={styles.sliderText}>Haftalık Gün Sayısı: {daysPerWeek}</Text>
                 <Slider
                   style={styles.slider}
                   minimumValue={1}
@@ -223,16 +278,16 @@ const MultiStepFormScreen = () => {
             <View style={styles.buttonContainer}>
               {step > 1 && (
                 <TouchableOpacity style={styles.neonButton} onPress={handlePreviousStep}>
-                  <Text style={styles.neonButtonText}>Back</Text>
+                  <Text style={styles.neonButtonText}>Geri</Text>
                 </TouchableOpacity>
               )}
               {step < totalSteps ? (
                 <TouchableOpacity style={styles.neonButton} onPress={handleNextStep}>
-                  <Text style={styles.neonButtonText}>Next</Text>
+                  <Text style={styles.neonButtonText}>İleri</Text>
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity style={styles.neonButton} onPress={handleSubmit}>
-                  <Text style={styles.neonButtonText}>Submit</Text>
+                  <Text style={styles.neonButtonText}>Kaydet</Text>
                 </TouchableOpacity>
               )}
             </View>

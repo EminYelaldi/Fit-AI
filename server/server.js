@@ -26,8 +26,8 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// API Endpoints
-app.post("/api/chat", async (req, res) => {
+// Chat GPT Gym program endpoint
+app.post("/api/chat/gym", async (req, res) => {
   const { message } = req.body;
   if (!message) {
     return res.status(400).send({ error: "Bir mesaj gerekli!" });
@@ -154,6 +154,96 @@ app.post("/api/chat", async (req, res) => {
     res.status(500).send({ error: error.response ? error.response.data : error.message });
   }
 });
+
+// Chat GPT Diet program endpoint
+app.post("/api/chat/diet", async (req, res) => {
+  const { message } = req.body;
+  if (!message) {
+    console.log(req.body);
+    return res.status(400).send({ error: "Bir mesaj gerekli!" });
+  }
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system", content: `
+    Sen bir diyetisyen ve beslenme uzmanısın. Kullanıcının verdiği bilgilere dayanarak, ona uygun bir diyet planı oluştur. Şunlara dikkat et:
+    1. Program kesinlikle 7 günlük olmalı ve her gün 3 ana öğün içermelidir.
+    2. Kullanıcının vücut kitle indeksi (VKİ):
+       - 23'ün altındaysa: Kilo alma hedefi,
+       - 23-30 arası: Kilo koruma hedefi,
+       - 30'un üstündeyse: Kilo verme hedefi.
+    3. Kalori hesaplaması:
+       - Kadınlar: 650 + (9.6 x kg) + (1.8 x cm) - (4.7 x yaş).
+       - Erkekler: 66 + (13.7 x kg) + (5 x cm) - (6.8 x yaş).
+    4. Kullanıcının günlük makro ihtiyacı (kilogram başına):
+       - Protein: 1.5-2 g,
+       - Yağ: Maks. 0.5 g,
+       - Karbonhidrat: Geriye kalan kalori miktarı.
+    5. Yemek önerilerinde şunlara dikkat et:
+       - Her öğünde, kişiye uygun ve dengeli yemekler öner.
+       - Eğer yiyecek taneli bir gıda (örneğin, muz, yumurta gibi) içeriyorsa, miktarını gram yerine adet olarak belirt.
+       - Yemeklerin adı model tarafından oluşturulmalı, örnek yemek adı verilmemelidir.
+       - Yemekler kullanıcının makro hedeflerine ve günlük kalori ihtiyacına uygun olmalıdır.
+       - Yemek isimleri ve içerikler, diyetin amacına (kilo alma, verme veya koruma) uygun olmalıdır.
+    6. Yanıt kesinlikle sadece şu formatta olmalıdır (açıklama yapma, hesaplama detaylarını gösterme, sadece JSON formatı üret):
+    {
+      \"program\": [
+        {
+          \"gün\": 1,
+          \"öğünler\": [
+            {
+              \"adı\": \"KAHVALTI\",
+              \"kalori\": KAHVALTI_KALORİ,
+              \"protein\": KAHVALTI_PROTEİN,
+              \"yağ\": KAHVALTI_YAĞ,
+              \"karbonhidrat\": KAHVALTI_KARBONHİDRAT,
+              \"yemek\": \"KAHVALTI_YEMEĞİ\"
+            },
+            {
+              \"adı\": \"ÖĞLE YEMEĞİ\",
+              \"kalori\": OGLE_KALORİ,
+              \"protein\": OGLE_PROTEİN,
+              \"yağ\": OGLE_YAĞ,
+              \"karbonhidrat\": OGLE_KARBONHİDRAT,
+              \"yemek\": \"OGLE_YEMEĞİ\"
+            },
+            {
+              \"adı\": \"AKŞAM YEMEĞİ\",
+              \"kalori\": AKSAM_KALORİ,
+              \"protein\": AKSAM_PROTEİN,
+              \"yağ\": AKSAM_YAĞ,
+              \"karbonhidrat\": AKSAM_KARBONHİDRAT,
+              \"yemek\": \"AKSAM_YEMEĞİ\"
+            }
+          ]
+        },
+        // Geri kalan günler aynı yapıda devam eder...
+      ]
+    }
+}`},
+        { role: "user", content: message },
+      ],
+    });
+
+    const reply = response.choices[0].message.content;
+
+    // JSON doğrulama
+    try {
+      const parsedReply = JSON.parse(reply);
+      res.status(200).send({ reply: parsedReply });
+    } catch (jsonError) {
+      console.log(reply);
+      console.error("JSON Parse Error:", jsonError);
+      res.status(500).send({ error: "Yanıt JSON formatında değil. Lütfen tekrar deneyin." });
+    }
+  } catch (error) {
+    console.error("OpenAI API Error:", error.response ? error.response.data : error.message);
+    res.status(500).send({ error: error.response ? error.response.data : error.message });
+  }
+});
+
 // 1. Kullanıcı ekleme endpointi
 app.post('/add-user', async (req, res) => {
   try {
@@ -170,7 +260,6 @@ app.post('/add-user', async (req, res) => {
     res.status(500).json({ message: 'Error adding user', error: error.message });
   }
 });
-
 // 2. Kullanıcıları listeleme endpointi
 app.get('/get-users', async (req, res) => {
   try {
@@ -184,73 +273,18 @@ app.get('/get-users', async (req, res) => {
 });
 
 //ID ile 1 Kullanıcı getir
-app.get('/get-user', async (req, res) => {
+app.get('/get-user/:id', async (req, res) => {
   try {
-    const { email } = req.query;
+    const { id } = req.params;
+    const userDoc = await db.collection('Users').doc(id).get();
+    if (!userDoc.exists) {
+      return res.status(404).json({ message: 'Kullanici bulunamadi' });
 
-    if (!email) {
-      return res.status(400).json({ message: 'Email gereklidir.' });
     }
 
-    const snapshot = await db.collection('Users').where('email', '==', email).get();
-
-    if (snapshot.empty) {
-      return res.status(404).json({ message: 'Kullanıcı bulunamadı.' });
-    }
-
-    const user = snapshot.docs[0].data();
-    res.status(200).json({ id: snapshot.docs[0].id, ...user });
+    res.status(200).json({ id: userDoc.id, ...userDoc.data() });
   } catch (error) {
-    res.status(500).json({ message: 'Kullanıcı alınırken bir hata oluştu.', error: error.message });
-  }
-});
-
- // Mail ile kullanıcı getirme
-  app.post('/get-user-by-email', async (req, res) => {
-    try {
-      const { email, password } = req.body;
-  
-      // Kullanıcıyı e-posta adresine göre bul
-      const userQuery = await db.collection('Users').where('email', '==', email).get();
-      console.log(req.body)
-      if (userQuery.empty) {
-        return res.status(404).json({ message: 'Kullanıcı bulunamadı' });
-      }
-  
-      // İlk kullanıcı belgesini al
-      const userDoc = userQuery.docs[0];
-      const userData = userDoc.data();
-  
-      // Şifre kontrolü
-      if (userData.password !== password) {
-        return res.status(401).json({ message: 'Şifre hatalı' });
-      }
-  
-      // Başarılı ise kullanıcıyı döndür
-      res.status(200).json({ id: userDoc.id, ...userData });
-    } catch (error) {
-      res.status(500).json({ message: 'Error fetching user', error: error.message });
-    }
-  });
-  
-
-
-app.post('/save-program', async (req, res) => {
-  try {
-    const { userId, program } = req.body;
-
-    if (!userId || !program) {
-      return res.status(400).json({ message: 'Kullanıcı ID ve program verisi gereklidir' });
-    }
-
-    // Kullanıcının programını kaydet veya güncelle
-    const userRef = db.collection('Users').doc(userId);
-    await userRef.update({ program });
-
-    res.status(200).json({ message: 'Program başarıyla kaydedildi' });
-  } catch (error) {
-    console.error('Program Kaydetme Hatası:', error);
-    res.status(500).json({ message: 'Program kaydedilirken bir hata oluştu', error: error.message });
+    res.status(500).json({ message: 'Error fetching users', error: error.message });
   }
 });
 
@@ -286,18 +320,49 @@ app.delete('/delete-user/:id', async (req, res) => {
 app.put('/update-user/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { email, password, program } = req.body;
+    const { email, password, gymProgram, dietProgram, age, weight, height, gender, daysPerWeek } = req.body;
 
-    if (!email && !password && !program) {
-      return res.status(400).json({ message: 'At least one field (name, email, age) is required' });
+    if (!email) {
+      return res.status(400).json({ message: 'email required' });
     }
 
-    await db.collection('Users').doc(id).update({ email, password, program });
+    await db.collection('Users').doc(id).update({ email, password, gymProgram, dietProgram, age, weight, height, gender, daysPerWeek });
     res.status(200).json({ message: `User with ID ${id} updated successfully` });
   } catch (error) {
     res.status(500).json({ message: 'Error updating user', error: error.message });
   }
 });
+// 5. Kullanıcıyı giriş yapma endpointi
+app.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
+
+    const snapshot = await db.collection('Users').where('email', '==', email).where('password', '==', password).get();
+    if (snapshot.empty) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // İlk bulunan dökümanın verisini ve ID'sini alın
+    const userDoc = snapshot.docs[0];
+    const userData = userDoc.data();
+    const userId = userDoc.id; // Document ID
+
+    res.status(200).json({
+      message: 'User logged in successfully',
+      user: {
+        id: userId, // Document ID
+        ...userData, // Kullanıcı verileri
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error logging in', error: error.message });
+  }
+});
+
 // Dosya işlemleri için örnek fonksiyon
 const hareketler = [];
 
@@ -308,7 +373,7 @@ function loadCsv() {
       hareketler.push(row);
     })
     .on("end", () => {
-      console.log("Hareketler yüklendi:");
+      console.log("Hareketler yüklendi");
     });
 }
 
