@@ -21,15 +21,9 @@ const ForgotPassword = () => {
     console.log('Password reset email sent to:', email);
     Alert.alert('Başarılı', 'Şifre sıfırlama bağlantısı gönderildi!');
   };
-  const handleGoBack = () => {
-    router.push('/src/screens/Login'); // Login ekranına yönlendirme
-  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <TouchableOpacity style={styles.backLink} onPress={handleGoBack}>
-              <MaterialCommunityIcons name="arrow-left" size={24} color="#BBF246" />
-            </TouchableOpacity>
       
       <KeyboardAvoidingView
         style={{ flex: 1 }}
