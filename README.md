@@ -2,7 +2,7 @@
 
 **Fit AI**, yapay zeka destekli bir fitness koçudur. Kullanıcıların kişisel antrenman ve beslenme programları oluşturarak sağlıklarını geliştirmelerine yardımcı olur.
 
-Bu uygulama React Native ile geliştirilmiş olup, backend tarafında Node.js ve Firebase kullanılmıştır. Yapay zeka özellikleri için OpenAI API’si entegre edilerek, kullanıcılara kişiselleştirilmiş antrenman ve beslenme önerileri sunulmaktadır.
+Bu uygulama React Native ile geliştirilmiş olup, backend tarafında Node.js ve Firebase kullanılmıştır. Yapay zeka özellikleri için OpenAI API’si entegre edilerek, kullanıcılara kişiselleştirilmiş antrenman ve beslenme önerileri sunulmaktadır..
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
